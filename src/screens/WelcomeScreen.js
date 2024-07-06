@@ -13,18 +13,22 @@ export default function WelcomeScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
+    // Initizialize ring padding values.
     ring1padding.value = 0;
     ring2padding.value = 0;
+
+    // Animate rings with delay.
     setTimeout(() => ring1padding.value = withSpring(ring1padding.value + hp(5)), 100);
     setTimeout(() => ring2padding.value = withSpring(ring2padding.value + hp(5.5)), 300);
 
-    setTimeout(() => navigation.navigate('Home'), 2500)
-  }, [])
+    // Navigate to LoginScreen after 2.5 seconds.
+    setTimeout(() => navigation.navigate('Login'), 2500);
+  }, [navigation, ring1padding, ring2padding]);
   return (
     <View className="flex-1 justify-center items-center space-y-10 bg-blue-300">
       <StatusBar style="light" />
 
-      {/* logo image with rings */}
+      {/* Logo image with rings */}
       <Animated.View className="bg-white/20 rounded-full" style={{ padding: ring2padding }}>
         <Animated.View className="bg-white/20 rounded-full" style={{ padding: ring1padding }}>
           <Image source={require('../../assets/images/welcome.png')}
@@ -32,7 +36,7 @@ export default function WelcomeScreen() {
         </Animated.View>
       </Animated.View>
 
-      {/* title and punchline */}
+      {/* Title and punchline */}
       <View className="flex items-center space-y-2">
         <Text style={{ fontSize: hp(7) }} className="font-bold text-white tracking-widest">
           DishDuo
