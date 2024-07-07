@@ -1,12 +1,33 @@
-import { View, Text, Image, SafeAreaView, TextInput, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { StatusBar } from 'expo-status-bar'
-import { useNavigation } from '@react-navigation/native'
-import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { View, Text, Image, SafeAreaView, TextInput, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { useNavigation } from '@react-navigation/native';
+import Animated, { FadeIn, FadeInDown, FadeInUp } from 'react-native-reanimated';;
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase';
 
 
 export default function LoginScreen() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const navigation = useNavigation();
+
+    const handleLogin = () => {
+        signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
+            // Signed In
+            const user = userCredential.user;
+            console.log('Logged in with:', user.email);
+            // Navigate to Home Screen
+            navigation.navigate('Home');
+        })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.error(errorCode, errorMessage);
+                alert(errorMessage);
+            });
+    };
+
     return (
         <View className="bg-white h-full w-full">
             <StatusBar style="light" />
@@ -24,7 +45,7 @@ export default function LoginScreen() {
                     </Animated.Text>
                 </View>
 
-                {/* form */}
+                {/* Form */}
                 <View className="flex items-center mx-5 space-y-4">
                     <Animated.View
                         entering={FadeInDown.duration(1000).springify()}
@@ -33,6 +54,9 @@ export default function LoginScreen() {
                         <TextInput
                             placeholder="Email"
                             placeholderTextColor={'gray'}
+                            value={email}
+                            onChangeText={setEmail}
+                            className="text-black"
                         />
                     </Animated.View>
                     <Animated.View
@@ -43,6 +67,9 @@ export default function LoginScreen() {
                             placeholder="Password"
                             placeholderTextColor={'gray'}
                             secureTextEntry
+                            value={password}
+                            onChangeText={setPassword}
+                            className="text-black"
                         />
                     </Animated.View>
 
@@ -50,7 +77,7 @@ export default function LoginScreen() {
                         className="w-full"
                         entering={FadeInDown.delay(400).duration(1000).springify()}>
 
-                        <TouchableOpacity className="w-full bg-sky-400 p-3 rounded-2xl mb-3">
+                        <TouchableOpacity onPress={handleLogin} className="w-full bg-sky-400 p-3 rounded-2xl mb-3">
                             <Text className="text-xl font-bold text-white text-center">Login</Text>
                         </TouchableOpacity>
                     </Animated.View>
@@ -60,8 +87,8 @@ export default function LoginScreen() {
                         className="flex-row justify-center">
 
                         <Text>Don't have an account? </Text>
-                        <TouchableOpacity onPress={() => navigation.push('Signup')}>
-                            <Text className="text-sky-600">SignUp</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                            <Text className="text-sky-600">Sign Up</Text>
                         </TouchableOpacity>
                     </Animated.View>
                 </View>
