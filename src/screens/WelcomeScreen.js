@@ -39,7 +39,7 @@ export default function WelcomeScreen() {
       {/* Title and punchline */}
       <View className="flex items-center space-y-2">
         <Text style={{ fontSize: hp(7) }} className="font-bold text-white tracking-widest">
-          DishDuo
+          Dish<Text className="text-blue-500">Duo</Text>
         </Text>
       </View>
     </View>

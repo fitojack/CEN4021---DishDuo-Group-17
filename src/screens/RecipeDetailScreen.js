@@ -14,7 +14,6 @@ import { Platform } from 'react-native';
 const ios = Platform.OS == 'ios';
 
 
-
 export default function RecipeDetailScreen(props) {
     let item = props.route.params;
     const [isFavourite, setIsFavourite] = useState(false);
